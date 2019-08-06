@@ -1,0 +1,41 @@
+<h1>Add chat room</h1>
+
+<%= form_with(model: @chat_room, local: true) do |form| %>
+    <div class="form-group">
+      <%= form.label :Assunto %>
+      <%= form.text_field :title, autofocus: true, class: 'form-control' %>
+    </div>
+
+    <div class="column is-narrow">
+      <div class="field">
+        <div class="control">
+          <div class="select is-warning is-small">
+            <%= form.collection_select :user_to, User.all, :id, :email %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if @chat_rooms.last != nil %>
+      <% puts @chat_rooms.last.id.to_s + " Verdadeiro"%>
+    <% else %>
+      <% puts 1.to_s + " Nulo"%>
+    <% end %>
+    
+    <%= form.fields_for :messages do |fl| %>
+      <% if @chat_rooms.last != nil %>
+        <%= fl.hidden_field  :chat_room_id, value: @chat_rooms.last.id+1 %>
+      <% else %>
+        <%= fl.hidden_field  :chat_room_id, value: 1 %>
+      <% end %>
+      <%= fl.hidden_field  :user_id, value: current_user.id %>
+      <div class="form-group">
+        <%= fl.label :body %>
+        <%= fl.text_area :body, class: 'form-control' %>
+        <small class="text-muted">From 2 to 1000 characters</small>
+      </div>
+    <% end %>
+    
+    <%= form.submit "Add!", class: 'btn btn-primary' %>
+<% end %>
+
+

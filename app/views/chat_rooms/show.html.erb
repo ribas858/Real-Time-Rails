@@ -1,0 +1,23 @@
+
+<% if @chat_room.user_id == current_user.id || @chat_room.user_to == current_user.id %>
+  <h1><%= @chat_room.title %></h1>
+
+  <div id="messages" data-chat-room-id="<%= @chat_room.id %>">
+    <%= render @chat_room.messages %>
+  </div>
+
+  <hr>
+
+  <%= form_for @message, url: "/message/#{@chat_room.id}" do |f| %>
+    <%= f.hidden_field  :chat_room_id, value: @chat_room.id %>
+    <%= f.hidden_field  :user_id, value: current_user.id %>
+    <div class="form-group">
+      <%= f.label :body %>
+      <%= f.text_area :body, class: 'form-control' %>
+      <small class="text-muted">From 2 to 1000 characters</small>
+    </div>
+
+    <%= f.submit "Post", class: 'btn btn-primary btn-lg' %>
+  <% end %>
+
+<% end %>

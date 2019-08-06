@@ -1,0 +1,5 @@
+
+
+<% if chat_room.user_id == current_user.id || chat_room.user_to == current_user.id %>
+    <li><%= link_to "Enter #{chat_room.messages.last.body}", chat_room_path(chat_room) %></li>
+<% end %>
